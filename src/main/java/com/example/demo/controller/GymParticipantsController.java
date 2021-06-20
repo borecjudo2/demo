@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.converter.ConverterParticipant;
+import com.example.demo.converter.ParticipantConverter;
 import com.example.demo.dto.ParticipantDTO;
 import com.example.demo.entity.Participant;
 import com.example.demo.service.ParticipantService;
@@ -19,38 +19,40 @@ public class GymParticipantsController {
     private ParticipantService participantService;
 
     @Autowired
-    private ConverterParticipant converterParticipant;
+    private ParticipantConverter participantConverter;
 
+    @ResponseBody
     @GetMapping
     public List<ParticipantDTO> getAllParticipants(){
         List<Participant> participants = participantService.getAll();
         return participants.stream()
-                .map(converterParticipant::convertToDto)
+                .map(participantConverter::convertToDto)
                 .collect(Collectors.toList());
     }
 
+    @ResponseBody
     @GetMapping("/{id}")
     public ParticipantDTO getParticipantById(@PathVariable Long id){
         Participant participant = participantService.getById(id);
-        return converterParticipant.convertToDto(participant);
+        return participantConverter.convertToDto(participant);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     @PostMapping
     public ParticipantDTO createParticipant(@RequestBody ParticipantDTO participantDTO){
-        Participant participant = converterParticipant.convertToEntity(participantDTO);
+        Participant participant = participantConverter.convertToEntity(participantDTO);
         Participant participantCreated = participantService.add(participant);
-        return converterParticipant.convertToDto(participantCreated);
+        return participantConverter.convertToDto(participantCreated);
     }
 
     @ResponseBody
     @PutMapping("/{id}")
     public ParticipantDTO updateParticipant(@RequestBody ParticipantDTO participantDTO, @PathVariable Long id){
-        Participant participant = converterParticipant.convertToEntity(participantDTO);
-        participant.setId(id);
-        Participant participantCreated = participantService.update(participant);
-        return converterParticipant.convertToDto(participantCreated);
+        Participant participant = participantService.getById(id);
+        Participant newParticipant = participantConverter.updateParticipant(participant, participantDTO);
+        Participant participantCreated = participantService.update(newParticipant);
+        return participantConverter.convertToDto(participantCreated);
     }
 
     @DeleteMapping("/{id}")

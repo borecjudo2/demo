@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.Participant;
+import com.example.demo.exception.BadRequestException;
 import com.example.demo.repository.ParticipantRepository;
 import com.example.demo.service.ParticipantService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +17,17 @@ public class ImplParticipantService implements ParticipantService {
 
     @Override
     public Participant getById(Long id) {
-        return participantRepository.getById(id);
+        return participantRepository.findById(id)
+                .orElseThrow(() -> new BadRequestException("Participant with id = " + id + " not found"));
     }
 
     @Override
     public List<Participant> getAll() {
-        return participantRepository.findAll();
+        List<Participant> participants = participantRepository.findAll();
+        if(participants.isEmpty()){
+            throw new BadRequestException("Participants not found");
+        }
+        return participants;
     }
 
     @Override
@@ -36,7 +42,8 @@ public class ImplParticipantService implements ParticipantService {
 
     @Override
     public void delete(Long id) {
-        Participant participant = participantRepository.getById(id);
+        Participant participant = participantRepository.findById(id)
+                .orElseThrow(() -> new BadRequestException("Participant with id = " + id + " not found"));
         participantRepository.delete(participant);
     }
 
