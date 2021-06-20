@@ -1,5 +1,10 @@
 target
 .idea
+.jpb
+.mvn
+HELP.md
+mvnw
+mvnw.cmd
 local.properties
 nb-configuration.xml
 nbactions.xml
