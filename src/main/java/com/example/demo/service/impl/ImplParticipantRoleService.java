@@ -15,7 +15,7 @@ public class ImplParticipantRoleService implements ParticipantRoleService {
 
     @Override
     public ParticipantRole getByRole(String role) {
-        return participantRoleRepository.findByRoleValue(role)
+        return participantRoleRepository.findByRoleValueIgnoreCase(role)
                 .orElseThrow(() -> new BadRequestException("ParticipantRole with role = " + role + " not found"));
     }
 }

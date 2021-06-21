@@ -21,7 +21,11 @@ public class ParticipantConverter {
     private ParticipantRoleService participantRoleService;
 
     public ParticipantDTO convertToDto(Participant participant) {
-        return modelMapper.map(participant, ParticipantDTO.class);
+        ParticipantDTO participantDTO = modelMapper.map(participant, ParticipantDTO.class);
+        participantDTO.setBirthday(participant.getBirthday());
+        participantDTO.setSubscriptionFrom(participant.getSubscriptionFrom());
+        participantDTO.setSubscriptionTo(participant.getSubscriptionTo());
+        return participantDTO;
     }
 
     public Participant convertToEntity(ParticipantDTO participantDTO) {

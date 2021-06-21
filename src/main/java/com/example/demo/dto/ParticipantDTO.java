@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Null;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -16,18 +18,25 @@ public class ParticipantDTO {
     @JsonIgnore
     private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
+    @Null(message = "id must be null")
     private Long id;
 
+    @NotBlank(message = "name must be not null")
     private String name;
 
+    @NotBlank(message = "lastName must be not null")
     private String lastName;
 
+    @NotBlank(message = "role must be not null")
     private String role;
 
+    @NotBlank(message = "birthdayDate must be not null")
     private String birthdayDate;
 
+    @NotBlank(message = "subscriptionFromDate must be not null")
     private String subscriptionFromDate;
 
+    @NotBlank(message = "subscriptionToDate must be not null")
     private String subscriptionToDate;
 
     public void setRoleValue(ParticipantRole participantRole){

@@ -18,23 +18,26 @@ public class Participant {
     @Column(name="ID", unique=true, nullable=false)
     private Long id;
 
-    @Column(name = "NAME")
+    @Column(name = "NAME", nullable = false)
     private String name;
 
-    @Column(name = "LAST_NAME")
+    @Column(name = "LAST_NAME", nullable = false)
     private String lastName;
     
-    @JoinColumn(name = "ROLE_ID", referencedColumnName = "ID")
-    @ManyToOne(optional=false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "ROLE_ID", referencedColumnName = "ID", nullable = false)
+    @ManyToOne
     private ParticipantRole roleValue;
 
-    @Column(name = "BIRTHDAY")
+    @Column(name = "BIRTHDAY", nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date birthday;
 
-    @Column(name = "SUBSCRIPTION_FROM")
+    @Column(name = "SUBSCRIPTION_FROM", nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date subscriptionFrom;
 
-    @Column(name = "SUBSCRIPTION_TO")
+    @Column(name = "SUBSCRIPTION_TO", nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date subscriptionTo;
 
 }
